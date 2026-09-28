@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FitBuddy — Your Plan</title><link rel="stylesheet" href="/static/styles.css"></head>
+<body class="page-shell">
+<main class="container">
+  <div class="topbar"><a href="/" class="brand">FitBuddy</a><a href="/">New plan</a></div>
+  {% if message %}<div class="alert success">{{ message }}</div>{% endif %}
+  {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+  {% if plan %}
+  <section class="card profile-card"><div><div class="eyebrow">PERSONALIZED PLAN</div><h1>{{ user.name }}</h1><p class="muted">{{ user.age }} years · {{ user.weight_kg }} kg · {{ user.goal|title }} · {{ user.intensity|title }} intensity</p></div><span class="pill">{% if plan.updated_plan %}Updated{% else %}Original{% endif %}</span></section>
+  {% if ai_demo %}<div class="alert info">Demo mode is active because GEMINI_API_KEY is not configured. Add a key to use live Gemini generation.</div>{% endif %}
+  <section class="card"><h2>7-day workout plan</h2><pre class="plan">{% if plan.updated_plan %}{{ plan.updated_plan }}{% else %}{{ plan.original_plan }}{% endif %}</pre></section>
+  <section class="card"><h2>Nutrition / recovery tip</h2><p class="tip">{{ plan.nutrition_tip }}</p></section>
+  <section class="card"><h2>Refine this plan</h2><p class="muted">Tell FitBuddy what you want changed, such as more cardio, an extra rest day, or less equipment.</p><form method="post" action="/submit-feedback"><input type="hidden" name="user_id" value="{{ user.user_id }}"><textarea name="feedback" required minlength="5" maxlength="2000" placeholder="Example: Add more cardio and make Wednesday a recovery day."></textarea><button class="primary" type="submit">Update plan with feedback</button></form></section>
+  {% endif %}
+</main></body></html>
